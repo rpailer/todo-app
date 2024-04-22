@@ -28,7 +28,6 @@ WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-COPY ./.env.local /app
 
 ENV NEXT_TELEMETRY_DISABLED 1
 

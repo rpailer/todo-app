@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: todo-nextjs
-        image: rudipailer/todo-app:latest
+        image: quay.io/rpailer/todo-app:latest
         ports:
         - containerPort: 3000
           name: todo

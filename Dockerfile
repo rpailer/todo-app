@@ -2,7 +2,7 @@
 
 # Install dependencies only when needed
 # hadolint ignore=DL3006
-FROM registry.access.redhat.com/ubi8/nodejs-16 AS deps
+FROM registry.access.redhat.com/ubi8/nodejs-20 AS deps
 USER 0
 WORKDIR /app
 
@@ -22,7 +22,7 @@ USER 1001:1001
 
 # Rebuild the source code only when needed
 # hadolint ignore=DL3006
-FROM registry.access.redhat.com/ubi8/nodejs-16 AS builder
+FROM registry.access.redhat.com/ubi8/nodejs-20 AS builder
 USER 0
 WORKDIR /app
 
@@ -37,7 +37,7 @@ USER 1001:1001
 
 # Production image, copy all the files and run next
 # hadolint ignore=DL3006
-FROM registry.access.redhat.com/ubi8/nodejs-16-minimal AS runner
+FROM registry.access.redhat.com/ubi8/nodejs-20-minimal AS runner
 USER 0
 WORKDIR /app
 

@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: todo-db-nextjs
-        image: rudipailer/todo-db:latest
+        image: quay.io/rpailer/todo-db:latest
         ports:
         - containerPort: 3000
           name: todo

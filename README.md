@@ -89,3 +89,23 @@ or
 
 npm update --legacy-peer-deps
 ```
+Nov 2024:
+[Upgrade Next.js to Version 14](https://nextjs.org/docs/pages/building-your-application/upgrading/version-14)
+```
+npm i next@latest react@latest react-dom@latest eslint-config-next@latest
+```
+## Update Node on Mac
+see [latest node version on mac](https://stackoverflow.com/questions/11284634/upgrade-node-js-to-the-latest-version-on-mac-os)
+
+```
+sudo npm cache clean -f
+sudo npm install -g n
+sudo n stable
+
+nvm ls
+nvm install v22.11.0
+nvm alias default v22.11.0
+nvm use default
+
+node -v
+```

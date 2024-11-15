@@ -1,0 +1,1 @@
+kubectl kustomize ../overlays/rp > out.yaml

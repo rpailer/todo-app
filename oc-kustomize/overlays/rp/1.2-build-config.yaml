@@ -1,0 +1,15 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: todo-app-build
+spec:
+  source:
+    type: Git
+    git:
+      uri: https://github.com/rpailer/todo-app.git
+      ref: cloudant
+    contextDir: 
+  output:
+    to:
+      kind: ImageStreamTag
+      name: todo-app:latest

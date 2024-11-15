@@ -1,0 +1,29 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: todo-app-build
+  labels:
+    name: todo-app-build
+    app: todo-app
+spec:
+  triggers:
+    - type: GitHub
+      github:
+        secret: secret101
+    - type: ImageChange
+      imageChange: {}
+    - type: ConfigChange
+  source:
+    type: Git
+    git:
+      uri: https://github.com/rpailer/todo-app.git
+      ref: cloudant
+    contextDir: 
+  strategy:
+    type: Docker                      
+    dockerStrategy:
+      dockerfilePath: Dockerfile    # Look for Dockerfile in: gitUri/contextDir/dockerfilePath
+  output:
+    to:
+      kind: ImageStreamTag
+      name: todo-app:latest

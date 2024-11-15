@@ -1,0 +1,160 @@
+apiVersion: v1
+data:
+  CLOUDANT_DB_NAME: todo-db
+  CLOUDANT_URL: https://36368344-a692-4d01-bdb2-2e6d0f5f1d42-bluemix.cloudantnosqldb.appdomain.cloud
+  SERVER_URL: http://127.0.0.1:3000
+kind: ConfigMap
+metadata:
+  name: todo-app-config-rp
+  namespace: dev-rpailer
+---
+apiVersion: v1
+data:
+  apikey: czUtamtOYWxEeFBCSnNhcmMtS0xieE5NOE93cHZNMHR4bEI0MXpVT2hyTHo=
+kind: Secret
+metadata:
+  name: todo-app-secret-rp
+  namespace: dev-rpailer
+type: Opaque
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-app-service-rp
+  namespace: dev-rpailer
+spec:
+  ports:
+  - name: 8080-tcp
+    port: 8080
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: todo-app-rp
+  type: ClusterIP
+---
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    app.openshift.io/route-disabled: "false"
+    openshift.io/generated-by: OpenShiftWebConsole
+  name: todo-app-rp
+  namespace: dev-rpailer
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    app: todo-app-rp
+    deploymentconfig: todo-app-rp
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      labels:
+        app: todo-app-rp
+        deploymentconfig: todo-app-rp
+    spec:
+      containers:
+      - env:
+        - name: SERVER_URL
+          valueFrom:
+            configMapKeyRef:
+              key: SERVER_URL
+              name: todo-app-config-rp
+        - name: CLOUDANT_URL
+          valueFrom:
+            configMapKeyRef:
+              key: CLOUDANT_URL
+              name: todo-app-config-rp
+        - name: CLOUDANT_DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              key: CLOUDANT_DB_NAME
+              name: todo-app-config-rp
+        - name: CLOUDANT_APIKEY
+          valueFrom:
+            secretKeyRef:
+              key: apikey
+              name: todo-app-secret-rp
+        name: todo-app-rp
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources: {}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+  test: false
+  triggers:
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - todo-app-rp
+      from:
+        kind: ImageStreamTag
+        name: todo-app-rp:latest
+        namespace: todo-app-rp
+    type: ImageChange
+  - type: ConfigChange
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: todo-app
+    name: todo-app-build
+  name: todo-app-build-rp
+  namespace: dev-rpailer
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: todo-app-rp:latest
+  source:
+    git:
+      ref: cloudant
+      uri: https://github.com/rpailer/todo-app.git
+    type: Git
+  strategy:
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+    type: Docker
+  triggers:
+  - github:
+      secret: secret101
+    type: GitHub
+  - imageChange: {}
+    type: ImageChange
+  - type: ConfigChange
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: todo-app-rp
+  namespace: dev-rpailer
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: todo-app-route-rp
+  namespace: dev-rpailer
+spec:
+  path: /
+  port:
+    targetPort: 8080-tcp
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: todo-app-service-rp

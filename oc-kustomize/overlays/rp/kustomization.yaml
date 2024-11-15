@@ -1,0 +1,10 @@
+resources:
+  - ../../base
+patches:
+  - path: 1.2-build-config.yaml
+  - path: 1.3-db-config.yaml
+  - path: 1.4-db-secret.yaml
+  - path: 1.5-deployment.yaml
+  - path: 1.6-service.yaml
+  - path: 1.7-route.yaml
+namespace: rpailer-dev

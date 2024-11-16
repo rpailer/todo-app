@@ -14,10 +14,12 @@ spec:
     metadata:
       labels:
         app: todo-app
+      annotations:
+        alpha.image.policy.openshift.io/resolve-names: '*'
     spec:
       containers:
       - name: todo-db-nextjs
-        image: quay.io/rpailer/todo-db:latest
+        image: todo-app:latest
         ports:
         - containerPort: 3000
           name: todo
@@ -37,3 +39,8 @@ spec:
               secretKeyRef:
                 name: todo-app-secret
                 key: apikey
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 100%
+      maxSurge: 25%

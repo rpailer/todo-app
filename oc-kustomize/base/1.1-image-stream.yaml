@@ -3,3 +3,8 @@ apiVersion: image.openshift.io/v1
 metadata:
   name: todo-app
   namespace: APP_PROJECT
+  annotations:
+    openshift.io/display-name: todo-app
+spec:
+  lookupPolicy:
+    local: true

@@ -14,6 +14,8 @@ spec:
     metadata:
       labels:
         app: todo-app
+      annotations:
+        alpha.image.policy.openshift.io/resolve-names: '*'
     spec:
       containers:
       - name: todo-db-nextjs
@@ -37,3 +39,8 @@ spec:
               secretKeyRef:
                 name: todo-app-secret
                 key: apikey
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%

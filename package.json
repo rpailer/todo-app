@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "debug": "NODE_OPTIONS='--inspect' next dev",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -11,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@ibm-cloud/cloudant": "^0.11.0",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
     "@types/node": "18.11.9",

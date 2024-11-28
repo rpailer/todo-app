@@ -2,9 +2,12 @@
 
 # Install dependencies only when needed
 # hadolint ignore=DL3006
-FROM registry.access.redhat.com/ubi8/nodejs-16 AS deps
+FROM registry.access.redhat.com/ubi8/nodejs-20 AS deps
 USER 0
 WORKDIR /app
+
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+# RUN apk add --no-cache libc6-compat=1.2.3-r2
 
 # Install dependencies based on the prefered package manager
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
@@ -19,7 +22,7 @@ USER 1001:1001
 
 # Rebuild the source code only when needed
 # hadolint ignore=DL3006
-FROM registry.access.redhat.com/ubi8/nodejs-16 AS builder
+FROM registry.access.redhat.com/ubi8/nodejs-20 AS builder
 USER 0
 WORKDIR /app
 
@@ -34,16 +37,12 @@ USER 1001:1001
 
 # Production image, copy all the files and run next
 # hadolint ignore=DL3006
-FROM registry.access.redhat.com/ubi8/nodejs-16-minimal AS runner
+FROM registry.access.redhat.com/ubi8/nodejs-20-minimal AS runner
 USER 0
 WORKDIR /app
 
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
-
-ENV CLOUDANT_URL=https://312c7150-eb85-42ac-83f5-225a79aeb266-bluemix.cloudantnosqldb.appdomain.cloud
-ENV CLOUDANT_APIKEY=sX-QIYil9WC_95AKPRrPpXFx8Z8jPo0isLDyRt4v7uPT
-ENV CLOUDANT_DB_NAME=todo-db-rp
 
 # You only need to copy next.config.js if you are NOT using the default configuration
 # COPY --from=builder /app/next.config.js ./

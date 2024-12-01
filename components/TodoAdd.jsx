@@ -1,4 +1,4 @@
-import { Button, Grid, TextField } from "@mui/material";
+import { Button, Grid, TextField, Paper } from "@mui/material";
 import React from "react";
 
 export default function TodoAdd (props) {
@@ -10,24 +10,33 @@ export default function TodoAdd (props) {
     return (
         <Grid container>
                 <Grid  md={11} item style={{ paddingRight: 16 }}>
-                    <TextField
-                        placeholder="Add Todo here"
-                        value={inputValue}
-                        onChange={v => setInputValue(v.target.value)}
-                        fullWidth                 
-                    />
+                    <Paper>
+                        <TextField
+                                placeholder="Add Todo here"
+                                value={inputValue}
+                                onChange={v => setInputValue(v.target.value)}
+                                onKeyUp={(event) => {
+                                    if (event.key === "Enter") {
+                                        onCreate(inputValue);
+                                    }
+                                }}
+                                fullWidth                 
+                            />
+                    </Paper>
                 </Grid>
-                <Grid  md={1} item>
-                    <Button
-                        color="info"
-                        variant="outlined"
-                        onClick={() => onCreate(inputValue)}
-                        sx={{
-                            height: 55,
-                        }}
-                    >
-                        Add
-                    </Button>
+                <Grid container md={1} item justifyContent="flex-end">
+                    <Paper>
+                        <Button
+                                color="info"
+                                variant="contained"
+                                onClick={() => onCreate(inputValue)}
+                                sx={{
+                                    height: 55,
+                                }}
+                            >
+                                Add
+                            </Button>
+                    </Paper>
                 </Grid>
         </Grid>
     )

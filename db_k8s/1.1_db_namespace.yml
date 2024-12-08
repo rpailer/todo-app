@@ -1,6 +1,6 @@
 kind: Namespace
 apiVersion: v1
 metadata:
-  name: todo-app-rp
+  name: rpailer-dev
   labels:
     name: todo-app

@@ -4,14 +4,12 @@ metadata:
   labels:
     app: todo-app
   name: todo-svc
-  namespace: todo-app-rp
+  namespace: rpailer-dev
 spec:
-  type: NodePort
   ports:
   - name: todo-svc
     port: 3000
     targetPort: 3000
-    nodePort: 31000
   selector:
     app: todo-app
   

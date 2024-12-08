@@ -9,7 +9,7 @@ spec:
   triggers:
     - type: GitHub
       github:
-        secret: secret101
+        secret: github-webhook-secret
     - type: ImageChange
       imageChange: {}
     - type: ConfigChange

@@ -49,7 +49,7 @@ export default function NavBar () {
                   
                 </Menu> 
                 <Typography variant="h6">
-                TODO App Rudi
+                TODO App
               </Typography>
             </Toolbar>
           </AppBar>

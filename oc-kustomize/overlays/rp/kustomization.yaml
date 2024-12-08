@@ -7,4 +7,5 @@ patches:
   - path: 1.5-deployment.yaml
   - path: 1.6-service.yaml
   - path: 1.7-route.yaml
+  - path: 1.8-webhook-secret.yaml
 namespace: rpailer-dev

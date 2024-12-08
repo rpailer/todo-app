@@ -11,8 +11,12 @@ spec:
       github:
         secret: github-webhook-secret
     - type: ImageChange
-      imageChange: {}
+      imageChange:
+      from:
+        kind: ImageStreamTag
+        name: todo-app:latest
     - type: ConfigChange
+    
   source:
     type: Git
     git:

@@ -16,7 +16,7 @@ spec:
   source:
     type: Git
     git:
-      uri: https://github.com/rpailer/todo-app.git
+      uri: https://github.com/ShkembiAnis/todo-app.git
       ref: cloudant
     contextDir: 
   strategy:

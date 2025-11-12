@@ -10,6 +10,7 @@ export default function TodoAdd (props) {
     return (
         <Grid  container justifyContent={"space-between"}>
                 <Grid item flexGrow={10} style={{ paddingRight: 16 }}>
+                    <Paper>
                         <TextField
                                 placeholder="Add Todo here"
                                 value={inputValue}
@@ -21,6 +22,7 @@ export default function TodoAdd (props) {
                                 }}
                                 fullWidth                 
                             />
+                    </Paper>
                 </Grid>
                 <Grid item  >
                     <Paper>

@@ -1,0 +1,16 @@
+https://stackoverflow.com/questions/49828493/upgrading-react-version-and-its-dependencies-by-reading-package-json
+
+npm install react@latest react-dom@latest
+
+https://thevalleyofcode.com/update-npm-dependencies/
+
+npm install -g npm-check-updates
+
+ncu -u
+this will upgrade all the version hints in the package.json file, to dependencies and devDependencies, so npm can install the new major version.
+
+npm update
+
+If you just downloaded the project without the node_modules dependencies and you want to install the shiny new versions first, just run
+
+npm install

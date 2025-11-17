@@ -18,9 +18,10 @@ export default function TodoAdd (props) {
                                 onKeyUp={(event) => {
                                     if (event.key === "Enter") {
                                         onCreate(inputValue);
+                                        setInputValue("");
                                     }
                                 }}
-                                fullWidth                 
+                                fullWidth                
                             />
                     </Paper>
                 </Grid>
@@ -29,7 +30,7 @@ export default function TodoAdd (props) {
                         <Button
                                 color="info"
                                 variant="contained"
-                                onClick={() => onCreate(inputValue)}
+                                onClick={() => {onCreate(inputValue); setInputValue("");}}
                                 sx={{
                                     height: 55,
                                 }}

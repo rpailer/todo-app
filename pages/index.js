@@ -1,5 +1,4 @@
 import { Grid } from '@mui/material'
-import styles from '../styles/Home.module.css'
 import NavBar from '../components/NavBar'
 import TodoList from '../components/TodoList'
 import { useRouter } from 'next/router'
@@ -131,7 +130,7 @@ export default function Home() {
   }
 
   return (
-    <div className={styles.container}>
+    <div>
       <Grid container direction="column" alignItems="stretch" spacing={1}>
         <Grid item>
           <NavBar/>

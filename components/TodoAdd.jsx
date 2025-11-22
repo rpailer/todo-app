@@ -1,4 +1,4 @@
-import { Button, Grid, TextField, Paper } from "@mui/material";
+import { Button, Grid, TextField, Paper, FormControl, Box } from "@mui/material";
 import React from "react";
 
 export default function TodoAdd (props) {
@@ -8,8 +8,8 @@ export default function TodoAdd (props) {
 
     const [inputValue, setInputValue] = React.useState("");
     return (
-        <Grid container>
-                <Grid  md={11} item style={{ paddingRight: 16 }}>
+        <Grid  container justifyContent={"space-between"}>
+                <Grid item flexGrow={10} style={{ paddingRight: 16 }}>
                     <Paper>
                         <TextField
                                 placeholder="Add Todo here"
@@ -18,18 +18,19 @@ export default function TodoAdd (props) {
                                 onKeyUp={(event) => {
                                     if (event.key === "Enter") {
                                         onCreate(inputValue);
+                                        setInputValue("");
                                     }
                                 }}
                                 fullWidth                 
                             />
                     </Paper>
                 </Grid>
-                <Grid container md={1} item justifyContent="flex-end">
+                <Grid item  >
                     <Paper>
                         <Button
                                 color="info"
                                 variant="contained"
-                                onClick={() => onCreate(inputValue)}
+                                onClick={() => {onCreate(inputValue); setInputValue("");}}
                                 sx={{
                                     height: 55,
                                 }}

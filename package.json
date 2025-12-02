@@ -25,5 +25,8 @@
     "react-dom": "^19.2.0",
     "typescript": "5.9.3",
     "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "baseline-browser-mapping": "^2.8.32"
   }
 }

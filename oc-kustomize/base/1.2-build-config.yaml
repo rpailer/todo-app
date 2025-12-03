@@ -6,6 +6,9 @@ metadata:
     name: todo-app-build
     app: todo-app
 spec:
+  resources:
+    limits:
+      memory: "1500Mi"
   triggers:
     - type: GitHub
       github:

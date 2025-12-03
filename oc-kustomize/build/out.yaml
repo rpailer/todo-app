@@ -5,23 +5,32 @@ data:
   SERVER_URL: http://127.0.0.1:3000
 kind: ConfigMap
 metadata:
-  name: todo-app-config-rp
-  namespace: dev-rpailer
+  name: todo-app-config
+  namespace: rpailer-dev
+---
+apiVersion: v1
+data:
+  WebHookSecretKey: c2VjcmV0dmFsdWUxdGhpc2lzbXl3ZWJob29rc2VjcmV0
+kind: Secret
+metadata:
+  name: github-webhook-secret
+  namespace: rpailer-dev
+type: Opaque
 ---
 apiVersion: v1
 data:
   apikey: czUtamtOYWxEeFBCSnNhcmMtS0xieE5NOE93cHZNMHR4bEI0MXpVT2hyTHo=
 kind: Secret
 metadata:
-  name: todo-app-secret-rp
-  namespace: dev-rpailer
+  name: todo-app-secret
+  namespace: rpailer-dev
 type: Opaque
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: todo-app-service-rp
-  namespace: dev-rpailer
+  name: todo-app-service
+  namespace: rpailer-dev
 spec:
   ports:
   - name: 8080-tcp
@@ -29,83 +38,57 @@ spec:
     protocol: TCP
     targetPort: 3000
   selector:
-    app: todo-app-rp
+    app: todo-app
   type: ClusterIP
 ---
-apiVersion: apps.openshift.io/v1
-kind: DeploymentConfig
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   annotations:
-    app.openshift.io/route-disabled: "false"
-    openshift.io/generated-by: OpenShiftWebConsole
-  name: todo-app-rp
-  namespace: dev-rpailer
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"todo-app:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"todo-db-nextjs\")].image"}]'
+  labels:
+    app: todo-app
+  name: todo-app-deployment
+  namespace: rpailer-dev
 spec:
   replicas: 1
-  revisionHistoryLimit: 10
   selector:
-    app: todo-app-rp
-    deploymentconfig: todo-app-rp
+    matchLabels:
+      app: todo-app
   strategy:
-    activeDeadlineSeconds: 21600
-    resources: {}
-    rollingParams:
-      intervalSeconds: 1
+    rollingUpdate:
       maxSurge: 25%
-      maxUnavailable: 25%
-      timeoutSeconds: 600
-      updatePeriodSeconds: 1
-    type: Rolling
+      maxUnavailable: 100%
+    type: RollingUpdate
   template:
     metadata:
+      annotations:
+        alpha.image.policy.openshift.io/resolve-names: '*'
       labels:
-        app: todo-app-rp
-        deploymentconfig: todo-app-rp
+        app: todo-app
     spec:
       containers:
       - env:
-        - name: SERVER_URL
-          valueFrom:
-            configMapKeyRef:
-              key: SERVER_URL
-              name: todo-app-config-rp
         - name: CLOUDANT_URL
           valueFrom:
             configMapKeyRef:
               key: CLOUDANT_URL
-              name: todo-app-config-rp
+              name: todo-app-config
         - name: CLOUDANT_DB_NAME
           valueFrom:
             configMapKeyRef:
               key: CLOUDANT_DB_NAME
-              name: todo-app-config-rp
+              name: todo-app-config
         - name: CLOUDANT_APIKEY
           valueFrom:
             secretKeyRef:
               key: apikey
-              name: todo-app-secret-rp
-        name: todo-app-rp
+              name: todo-app-secret
+        image: todo-app:latest
+        name: todo-db-nextjs
         ports:
-        - containerPort: 8080
-          protocol: TCP
-        resources: {}
-      dnsPolicy: ClusterFirst
-      restartPolicy: Always
-      schedulerName: default-scheduler
-      securityContext: {}
-      terminationGracePeriodSeconds: 30
-  test: false
-  triggers:
-  - imageChangeParams:
-      automatic: true
-      containerNames:
-      - todo-app-rp
-      from:
-        kind: ImageStreamTag
-        name: todo-app-rp:latest
-        namespace: todo-app-rp
-    type: ImageChange
-  - type: ConfigChange
+        - containerPort: 3000
+          name: todo
 ---
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
@@ -113,13 +96,16 @@ metadata:
   labels:
     app: todo-app
     name: todo-app-build
-  name: todo-app-build-rp
-  namespace: dev-rpailer
+  name: todo-app-build
+  namespace: rpailer-dev
 spec:
   output:
     to:
       kind: ImageStreamTag
-      name: todo-app-rp:latest
+      name: todo-app:latest
+  resources:
+    limits:
+      memory: 1500Mi
   source:
     git:
       ref: cloudant
@@ -131,23 +117,31 @@ spec:
     type: Docker
   triggers:
   - github:
-      secret: secret101
+      secret: github-webhook-secret
     type: GitHub
-  - imageChange: {}
+  - from:
+      kind: ImageStreamTag
+      name: todo-app:latest
+    imageChange: null
     type: ImageChange
   - type: ConfigChange
 ---
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
-  name: todo-app-rp
-  namespace: dev-rpailer
+  annotations:
+    openshift.io/display-name: todo-app
+  name: todo-app
+  namespace: rpailer-dev
+spec:
+  lookupPolicy:
+    local: true
 ---
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: todo-app-route-rp
-  namespace: dev-rpailer
+  name: todo-app-route
+  namespace: rpailer-dev
 spec:
   path: /
   port:
@@ -157,4 +151,4 @@ spec:
     termination: edge
   to:
     kind: Service
-    name: todo-app-service-rp
+    name: todo-app-service

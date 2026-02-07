@@ -1,4 +1,9 @@
-import { AppBar, IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from "react";
 import { useRouter } from 'next/router'

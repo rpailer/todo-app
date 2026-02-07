@@ -60,7 +60,7 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
-# Update Nextjs
+## Update Nextjs
 see [how-to-update-next-js](https://medium.com/nextjs/how-to-update-next-js-old-version-to-the-latest-version-6870f1f1b8d1)
 
 ```
@@ -73,5 +73,32 @@ npm update
 --on error
 npm update --force
  
-ornpm update --legacy-peer-deps
+or
+
+npm update --legacy-peer-deps
+```
+Nov 2024:
+[Upgrade Next.js to Version 14](https://nextjs.org/docs/pages/building-your-application/upgrading/version-14)
+```
+npm i next@latest react@latest react-dom@latest eslint-config-next@latest
+```
+## Update Node on Mac
+see [latest node version on mac](https://stackoverflow.com/questions/11284634/upgrade-node-js-to-the-latest-version-on-mac-os)
+
+```
+sudo npm cache clean -f
+sudo npm install -g n
+sudo n stable
+
+nvm ls
+nvm install v22.11.0
+nvm alias default v22.11.0
+nvm use default
+
+node -v
+```
+
+update npm
+```
+npm install -g npm@latest
 ```

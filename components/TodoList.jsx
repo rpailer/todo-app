@@ -1,4 +1,5 @@
-import { Checkbox, ListItemText } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import ListItemText from "@mui/material/ListItemText";
 import DeleteOutlined  from "@mui/icons-material/DeleteOutlined";
 import { IconButton, List, ListItem, Paper } from "@mui/material";
 

@@ -109,3 +109,22 @@ nvm use default
 
 node -v
 ```
+
+## Error on podman build
+> podman build -t todo-db .
+Error: invalid symlink
+
+solution: before podman build
+rm -r .next
+rm -r node_modules
+
+then:
+```
+$ podman build . -t todo-db
+$ podman image ls 
+
+
+$ podman run -d -p 8080:3000 --name todo-db todo-db  
+$ podman stop todo-db
+$ podman container rm todo-db  
+```

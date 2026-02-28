@@ -48,7 +48,7 @@ ENV NEXT_TELEMETRY_DISABLED 1
 # COPY --from=builder /app/next.config.js ./
 COPY --from=builder --chown=1001:1001 /app/node_modules ./node_modules
 COPY --from=builder --chown=1001:1001 /app/package.json ./package.json
-COPY --from=builder --chown=1001:1001 /app/.next ./.next
+# COPY --from=builder --chown=1001:1001 /app/.next ./.next
 # COPY --from=builder --chown=1001:1001 /app/.next/standalone ./
 COPY --from=builder --chown=1001:1001 /app/.next/static ./.next/static
 

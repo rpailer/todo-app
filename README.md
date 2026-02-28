@@ -2,18 +2,18 @@
 
 This app is build using Next.js.
 
-1. install Node.js on your machine: https://nodejs.org/en/  
-2. create a Next.js application with `npx  create-next-app todo_app` see https://nextjs.org/ 
-3. install Material UI dependencies  
-   Material UI 
+1. install Node.js on your machine: https://nodejs.org/en/
+2. create a Next.js application with `npx  create-next-app todo_app` see https://nextjs.org/
+3. install Material UI dependencies
+   Material UI
    `npm install @mui/material @emotion/react @emotion/styled`
    `npm install @mui/icons-material @mui/material @emotion/styled @emotion/react`
 4. for UUID generation: `npm install uuid`
 
 ## Docker build
-Dockerfile taken from: https://nextjs.org/docs/deployment  
+Dockerfile taken from: https://nextjs.org/docs/deployment
 
-Build image:  
+Build image:
 `docker build . -t todo-app`
 
 Run image
@@ -23,7 +23,7 @@ Run image
 install IBM Cloudant client:
 `npm install @ibm-cloud/cloudant`
 
-for local development:  
+for local development:
 Create the file .env.local in the todo-app folder
 ```
 CLOUDANT_URL= https://ddfc6f2b-ef9a-4f90-bc21-7b4721757507-bluemix.cloudant.com
@@ -84,7 +84,7 @@ npm update
 
 --on error
 npm update --force
- 
+
 or
 
 npm update --legacy-peer-deps
@@ -110,21 +110,7 @@ nvm use default
 node -v
 ```
 
-## Error on podman build
-> podman build -t todo-db .
-Error: invalid symlink
-
-solution: before podman build
-rm -r .next
-rm -r node_modules
-
-then:
+update npm
 ```
-$ podman build . -t todo-db
-$ podman image ls 
-
-
-$ podman run -d -p 8080:3000 --name todo-db todo-db  
-$ podman stop todo-db
-$ podman container rm todo-db  
+npm install -g npm@latest
 ```
